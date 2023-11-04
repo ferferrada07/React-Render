@@ -1,5 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import React, {Fragment, useState}from "react";
+import {Form, useForm} from "react-hook-form"
+import Swal from "sweetalert2"
 
 
 const Formulario = () => {
@@ -10,24 +12,33 @@ const Formulario = () => {
         Edad:'',
         Cargo:'',
         Telefono:''
-    })
+    });
 
     const handleInputChange = (event) => {
-        console.log(event.target.value)
+        
         setDatos ({
             ...datos,
             [event.target.name] : event.target.value
         })
-    }
+    };
 
-    const enviarDatos =(event) => {
-        event.preventDefault();
-        console.log(datos.Nombre+''+datos.Correo+''+datos.Edad+''+datos.Cargo+''+datos.Telefono)
-    }
+    const {register, formState:{errors}, handleSubmit,reset} = useForm ();
+
+    function insertar (data) {
+        Swal.fire({
+          position: 'top-center',
+          icon: 'success',
+          title: "Formulario Exitoso",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        reset();
+      };
+
 
     return (
         <Fragment >
-            <form className="Formulario" onSubmit={enviarDatos}>
+            <form className="Formulario" onSubmit={handleSubmit (insertar)}>
                 <div className="form-row">
                     <div className="form-group col-md-12">
                         <input 
@@ -36,7 +47,9 @@ const Formulario = () => {
                         className="form-control"
                         name="Nombre"
                         onChange={handleInputChange}
-                         />
+                        {...register("nombre",{required:true})}
+                        />
+                        {errors.nombre?.type ==="required" && (<div style={{backgroundColor:"red"}}>Ingresa Nombre</div>)}
                     </div>
                     <div className="form-group col-md-12">
                         <input 
@@ -45,7 +58,10 @@ const Formulario = () => {
                         className="form-control"
                         name="Correo" 
                         onChange={handleInputChange}
+                        {...register("correo",{required:true, pattern:/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/})}
                         />
+                        {errors.correo?.type ==="required" && (<div style={{backgroundColor:"red"}}>Ingresa tu correo</div>)}
+                        {errors.correo?.type ==="pattern" && (<div style={{backgroundColor:"red"}}>Correo no valido</div>)}
                     </div>
                     <div className="form-group col-md-12">
                         <input 
@@ -54,7 +70,9 @@ const Formulario = () => {
                         className="form-control"
                         name="Edad" 
                         onChange={handleInputChange}
+                        {...register("edad",{required:true, pattern:"\d*"})}
                         />
+                        {errors.edad?.type ==="required" && (<div style={{backgroundColor:"red"}}>Ingresa Edad</div>)}
                     </div>
                     <div className="form-group col-md-12">
                         <input 
@@ -63,7 +81,9 @@ const Formulario = () => {
                         className="form-control"
                         name="Cargo" 
                         onChange={handleInputChange}
+                        {...register("cargo",{required:true,})}
                         />
+                        {errors.cargo?.type ==="required" && (<div style={{backgroundColor:"red"}}>Ingresa Cargo</div>)}
                     </div>
                     <div className="form-group col-md-12">
                         <input 
@@ -72,7 +92,9 @@ const Formulario = () => {
                         className="form-control"
                         name="Telefono" 
                         onChange={handleInputChange}
+                        {...register("telefono",{required:true, valueAsNumber:true})}
                         />
+                        {errors.telefono?.type ==="required" && (<div style={{backgroundColor:"red"}}>Ingresa Telefono</div>)}
                     </div>
                     <div className="form-group col-md-12">
                         <button 

@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BaseColaboradores } from "../BaseColaboradores";
+
 import Table from 'react-bootstrap/Table';
 import { Container, FormControl, InputGroup } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 
 
-const Lista = () => {
-const [colaboradores, setColaboradores] = useState(BaseColaboradores);
+const Lista = ({colaboradores}) => {
+
 const [search, setSearch] =useState('');
     
 	

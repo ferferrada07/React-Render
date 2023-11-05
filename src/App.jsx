@@ -4,15 +4,22 @@ import Header from "./Components/Header"
 import Formulario from "./Components/Formulario"
 import Footer from "./Components/Footer"
 import Lista from "./Components/Lista"
+import { useState } from "react"
+import { BaseColaboradores } from "./BaseColaboradores"
 
 
 function App() {
+
+ const [colaboradores, setColaboradores] = useState(BaseColaboradores)
+
+
+
   return (
     <div >
       <div>
         <Header/>
-        <Formulario/>
-        <Lista></Lista>
+        <Formulario setColaboradores={setColaboradores} colaboradores={colaboradores}/>
+        <Lista colaboradores={colaboradores}></Lista>
       </div>
       <div>
         <Footer
